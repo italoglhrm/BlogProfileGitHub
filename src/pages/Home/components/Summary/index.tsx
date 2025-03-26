@@ -1,40 +1,67 @@
+import { useEffect, useState } from "react";
+
 import { SummaryAnchors, SummaryContainer, SummaryHeader } from "./styles";
 
 import { ArrowUpRight, Buildings, GithubLogo, Users } from "phosphor-react";
 
+import axios from "axios";
 
 export function Summary() {
 
-  // "https://api.github.com/users", "/lucaspedronet"
-  // "https://api.github.com/search"
-  // "https://api.github.com/repos/lucaspedronet/TudoLista/issues"
+  interface UserProfile {
+    avatar_url: string;
+    name: string;
+    bio: string;
+    login: string;
+    company?: string;
+    followers: number;
+    html_url: string;
+  }
 
+  const [user, setUser] = useState<UserProfile | null>(null);
+  
+  useEffect(() => {
+    async function fetchUserData() {
+      try {
+        const response = await axios.get("https://api.github.com/users/italoglhrm");
+        setUser(response.data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    }
+    fetchUserData();
+  }, []);
+  
+  if (!user) {
+    return <p>Aguarde, carregando os dados do GitHub...</p>;
+  }
+ 
   return (
     <SummaryContainer>
-      <img src="../src/assets/avatar.JPG" />
+      <img src={user.avatar_url} alt="User Avatar" />
       <section>
         <SummaryHeader>
-          <h1>Lucas Pedro</h1>
-          <a href="#" target="_blank">
+          <h1>{user.name}</h1>
+          <a href={user.html_url} target="_blank">
             GITHUB
             <ArrowUpRight size={12} />
           </a>
         </SummaryHeader>
-        <p>Software Engineering. developer at NodeJS, ReactJS, React Native, Electron.</p>
+        <p>{user.bio}</p>
         <SummaryAnchors>
           <div>
             <GithubLogo size={18} />
-            <span>lucaspedronet</span>
+            <span>`{user.login}`</span>
           </div>
 
           <div>
             <Buildings size={18} />
-            <span>Paraná Banco</span>
+            <span>{user.company}</span>
           </div>
 
           <div>
             <Users size={18} />
-            <span>47</span>
+            <span>{user.followers}</span>
           </div>
         </SummaryAnchors>
       </section>
