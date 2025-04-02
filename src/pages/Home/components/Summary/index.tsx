@@ -6,6 +6,8 @@ import { ArrowUpRight, Buildings, GithubLogo, Users } from "phosphor-react";
 
 import axios from "axios";
 
+import { api } from "../../../../lib/api";
+
 export function Summary() {
 
   interface UserProfile {
@@ -23,7 +25,7 @@ export function Summary() {
   useEffect(() => {
     async function fetchUserData() {
       try {
-        const response = await axios.get("https://api.github.com/users/italoglhrm");
+        const response = await api.get("/users/italoglhrm");
         setUser(response.data);
       } catch (error) {
         console.error("Error fetching user data:", error);

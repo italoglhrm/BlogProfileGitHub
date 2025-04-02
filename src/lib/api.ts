@@ -1,5 +1,15 @@
 import axios from "axios";
 
 export const api = axios.create({
-    baseURL: "https://api.github.com/",
-})
+  baseURL: "https://api.github.com/",
+});
+
+export async function searchIssues(user: string, repo: string) {
+  try {
+    const response = await api.get(`/repos/${user}/${repo}/issues`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching issues:", error);
+    return [];
+  }
+}

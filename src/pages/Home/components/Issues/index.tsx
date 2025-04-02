@@ -1,15 +1,19 @@
-// import { dateFormatter } from "../../../../utils/formatter";
 import { IssuesContainer, StyledNavLink } from "./styles";
+import { Issue } from "../../../../types";
 
-export function Issues() {
+interface IssuesProps {
+  issue: Issue
+}
+
+export function Issues({ issue }: IssuesProps) {
   return (
-    <IssuesContainer>
-      <StyledNavLink to="/issue">
+    <IssuesContainer style={{ marginTop: "20px" }}>
+      <StyledNavLink to={"/issue/${issue.number}"}>
         <div>
-          <h2>Exemplo de issue</h2>
-          <span>20/03/2025</span>
+          <h2>{issue.title}</h2>
+          <span>{new Date(issue.created_at).toLocaleDateString()}</span>
         </div>
-        <p>body</p>
+        <p>{issue.body}</p>
       </StyledNavLink>
     </IssuesContainer>
   );
