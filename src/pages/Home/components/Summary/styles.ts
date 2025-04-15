@@ -10,6 +10,7 @@ export const SummaryContainer = styled.aside`
   gap: 2rem;
 
   margin-top: -6.25rem;
+  margin-bottom: 2rem;
 
   & > img {
     max-width: 9.25rem;
